@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Send a Google review request automatically when a job closes</title>
+<meta name="description" content="A webhook recipe for Zapier, Make and n8n: send a Google review request after each job, with de-duplication, delays, quiet hours and a log.">
+<link rel="canonical" href="https://reputemap.hashnode.dev/send-a-google-review-request-automatically-when-a-job-closes-a-webhook-recipe-for-zapier-make-and-n8n">
+<meta name="author" content="ReputeMap">
+<style>body{max-width:720px;margin:40px auto;padding:0 20px;font:17px/1.65 system-ui,sans-serif;color:#0f172a}pre{background:#f1f5f9;padding:12px;border-radius:8px;overflow:auto;font-size:14px}a{color:#1d5fea}</style>
+</head>
+<body>
+<article>
+<h1>Send a Google review request automatically when a job closes</h1>
+<p>Most home-service and clinic owners agree that the best moment to ask for a Google review is right after the job: the plumber just left, the invoice is paid, the visit is fresh. The worst way to do it is by hand, because by Friday nobody remembers who to ask.</p>
+<p>The fix is boring and reliable: your job tool fires a webhook when a job closes, and something sends the review request. Here’s the pattern we built at ReputeMap, and the details that decide whether it works in real life.</p>
+<h3>The shape of it</h3>
+<p>Every workspace gets a private trigger URL, and your job tool posts the customer to it (JSON or form fields both work):</p>
+<pre>POST https://api.reputemap.com/api/hooks/jobs/rmj_…
+{"first_name":"Ava","email":"ava@example.com","job_id":"J-1042","location":"Austin","staff":"Jesse Ramirez"}</pre>
+<p>ReputeMap then sends the same review request a person would send from the app: by email, or by text from the business’s own Quo (OpenPhone) or Twilio number when there’s only a phone.</p>
+<h3>Wiring it up</h3>
+<ul>
+<li><strong>Zapier:</strong> trigger = your tool’s “job completed” or “invoice paid”, action = Webhooks by Zapier → POST to the trigger URL (needs a paid Zapier plan).</li>
+<li><strong>Make:</strong> your tool’s module → HTTP → Make a request, method POST, body type JSON.</li>
+<li><strong>n8n:</strong> your trigger node → HTTP Request node, POST, JSON body.</li>
+<li><strong>Housecall Pro:</strong> its Webhooks app (MAX plan) can post job.completed straight to a location’s own trigger URL.</li>
+<li><strong>Jobber:</strong> through Zapier’s “Job Closed” trigger.</li>
+</ul>
+<h3>Five details that matter more than the webhook</h3>
+<p><strong>1. Forgiving field names.</strong> Every tool names things differently: “First Name”, customer_email, customer[email], a nested customer object. We normalise case, spaces, dashes and common prefixes, and look inside wrappers like data or payload. Otherwise every new tool turns into a support ticket.</p>
+<p><strong>2. Never ask twice.</strong> Webhooks get retried and Zaps get duplicated. The job, invoice or appointment id is the de-duplication key: the same job never sends twice. On top of that, anyone asked in the last 30 days, by any location or campaign, is skipped.</p>
+<p><strong>3. Wait a little.</strong> Requests go out 2 hours after the event by default. “Job closed” often fires while the technician is still in the driveway.</p>
+<p><strong>4. Respect the quiet.</strong> Quiet hours hold requests at night and on weekends, and opt-outs from any channel are honoured everywhere.</p>
+<p><strong>5. Show what happened.</strong> A “Send a test event” button runs the whole pipeline without sending anything, and a log of the last 50 events says what happened in plain words: queued, sent, skipped (duplicate job, asked recently, opted out) or rejected (no email or phone, unknown location). Silent failures are the number-one complaint about review-request tools, and a log is the cheapest cure.</p>
+<h3>One rule we won’t break</h3>
+<p>Every customer gets the same request. There’s no “only ask the happy ones” filter and no way to cancel a queued request because the job went badly. Google’s review policies and the FTC’s 2024 rule on consumer reviews both forbid review gating, and it backfires anyway.</p>
+<h3>Links</h3>
+<ul>
+<li>Setup guide for each tool: <a href="https://reputemap.com/integrations/job-tools">reputemap.com/integrations/job-tools</a></li>
+<li>The REST API and MCP server: <a href="https://reputemap.com/docs/api">reputemap.com/docs/api</a></li>
+</ul>
+<p><a href="https://reputemap-com.github.io/">ReputeMap for developers</a></p></article></body></html>
