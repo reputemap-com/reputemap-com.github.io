@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ReputeMap for developers: Google reviews API & MCP server</title>
+<meta name="description" content="Open-source resources from ReputeMap: a hosted MCP server and REST API for Google Business Profile reviews, examples, agent skills and a 38,547-business review dataset.">
+<link rel="icon" href="logo.png">
+<meta property="og:title" content="ReputeMap for developers: Google reviews API & MCP server">
+<meta property="og:description" content="MCP server, REST API, examples, agent skills and an open Google review benchmark dataset.">
+<meta property="og:image" content="https://reputemap-com.github.io/og.png">
+<meta property="og:url" content="https://reputemap-com.github.io/">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Organization","name":"ReputeMap","url":"https://reputemap.com","logo":"https://reputemap-com.github.io/logo.png","description":"Google review management for multi-location businesses and agencies.","sameAs":["https://github.com/reputemap-com","https://www.linkedin.com/company/reputemap","https://x.com/ReputeMap","https://chromewebstore.google.com/detail/eiiifofjllbpiompaccjikaohnomdlbi","https://wordpress.org/plugins/reputemap-reviews/"]}
+</script>
+<style>
+:root{--fg:#0f172a;--muted:#475569;--line:#e2e8f0;--brand:#1d5fea;--bg:#fff}
+@media (prefers-color-scheme:dark){:root{--fg:#e2e8f0;--muted:#94a3b8;--line:#1e293b;--brand:#60a5fa;--bg:#0b1120}}
+body{margin:0;font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--fg);background:var(--bg)}
+main{max-width:760px;margin:0 auto;padding:40px 20px}
+header{display:flex;gap:14px;align-items:center}
+header img{width:56px;height:56px;border-radius:12px}
+h1{font-size:28px;line-height:1.25;margin:0}
+h2{font-size:20px;margin:36px 0 8px}
+p,li{color:var(--muted)}
+a{color:var(--brand)}
+ul{padding-left:20px}
+li{margin:6px 0}
+code{background:rgba(127,127,127,.12);padding:2px 5px;border-radius:4px;font-size:14px}
+pre{background:rgba(127,127,127,.12);padding:12px;border-radius:8px;overflow:auto;font-size:13px}
+footer{margin-top:48px;border-top:1px solid var(--line);padding-top:16px;font-size:14px;color:var(--muted)}
+</style>
+</head>
+<body>
+<main>
+<header><img src="logo.png" alt="ReputeMap logo"><h1>ReputeMap for developers</h1></header>
+<p><a href="https://reputemap.com">ReputeMap</a> manages Google reviews for multi-location businesses and agencies: alerts, AI reply drafts you approve, review requests by email or text, and reports for every location. Everything below is public and free to use.</p>
+
+<h2>Hosted MCP server for Google reviews</h2>
+<p>Connect Claude, Cursor or any MCP client to the Google reviews you manage. Endpoint: <code>https://api.reputemap.com/mcp</code> (Streamable HTTP). Tools: <code>list_locations</code>, <code>list_reviews</code>, <code>get_review_stats</code>, <code>send_review_request</code>, <code>get_usage</code>.</p>
+<pre>claude mcp add --transport http reputemap https://api.reputemap.com/mcp \
+  --header "Authorization: Bearer $REPUTEMAP_API_KEY"</pre>
+<ul>
+<li><a href="https://reputemap.com/docs/mcp">MCP setup guide</a></li>
+<li><a href="https://github.com/reputemap-com/mcp">reputemap-com/mcp</a>: the server listing, official registry name <code>com.reputemap/reputemap</code></li>
+</ul>
+
+<h2>REST API</h2>
+<p>Read reviews and stats per location, and send review requests from your CRM, job tool or a cron job. Every paid plan and the trial include 1,000 API credits a month.</p>
+<ul>
+<li><a href="https://reputemap.com/docs/api">API reference</a></li>
+<li><a href="https://github.com/reputemap-com/examples">reputemap-com/examples</a>: Python and Node scripts, MCP configs</li>
+<li><a href="https://reputemap.com/integrations/job-tools">Send a review request when a job is done</a> (Zapier, Make, n8n, Housecall Pro, Jobber)</li>
+</ul>
+
+<h2>Agent skills</h2>
+<p>Ready-made skills for AI agents: inbox triage, reply drafting, negative-review response, client reports and honest review requests.</p>
+<pre>npx skills add reputemap-com/review-skills</pre>
+<ul><li><a href="https://github.com/reputemap-com/review-skills">reputemap-com/review-skills</a></li></ul>
+
+<h2>Open data: Google review benchmarks</h2>
+<p>Ratings, review counts and owner reply rates for 38,547 US businesses in 50 industries, CSV under CC BY 4.0.</p>
+<ul>
+<li><a href="https://github.com/reputemap-com/google-review-benchmarks">reputemap-com/google-review-benchmarks</a></li>
+<li><a href="https://reputemap.com/google-review-benchmarks">The study with charts</a></li>
+</ul>
+
+<h2>Free tools</h2>
+<ul>
+<li><a href="https://reputemap.com/tools/google-review-link-generator">Google review link generator</a></li>
+<li><a href="https://reputemap.com/tools/google-maps-rank-checker">Google Maps rank checker</a></li>
+<li><a href="https://reputemap.com/tools">All free tools</a></li>
+</ul>
+
+<footer>ReputeMap · <a href="https://reputemap.com">reputemap.com</a> · <a href="https://reputemap.com/changelog">Changelog</a> · <a href="https://github.com/reputemap-com">GitHub</a></footer>
+</main>
+</body>
+</html>
